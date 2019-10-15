@@ -12,7 +12,7 @@ object Derivator {
 	def prepareGame(players: JsonArray): HashMap[String, Integer] = {
 		val results = new HashMap[String, Integer]
 
-		Globals.attributes.foreach(attribute => {
+		Globals.ATTRIBUTES.foreach(attribute => {
 			var radAttr = 0
 
 			for (i <- 0 to 5) {

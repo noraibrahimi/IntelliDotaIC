@@ -20,17 +20,17 @@ object Importer {
 		var foundGames = 0
 
 		breakable {
-			for (gameId <- Globals.startAt to Globals.endAt) {
-				val game = Fetcher.fetchGames(Globals.api + gameId + Globals.key)
+			for (gameId <- Globals.START_ID to Globals.END_ID) {
+				val game = Fetcher.fetchGames(Globals.STEAM_API + gameId + Globals.STEAM_KEY)
 
 				if (game != null) {
 					matches = matches :+ game
 					foundGames += 1
 
-					println(foundGames + ". Analyzing game: " + Globals.api + gameId + Globals.key)
+					println(foundGames + ". Analyzing game: " + Globals.STEAM_API + gameId + Globals.STEAM_KEY)
 				}
 
-				if (foundGames == Globals.numberOfFeeds) break
+				if (foundGames == Globals.FEEDS_NUMBER) break
 			}
 		}
 
@@ -39,7 +39,7 @@ object Importer {
 		gamesDF.write.format("csv")
 			.option("header", true)
 			.mode("overwrite")
-			.save(Globals.datasetsRoute + "steam_dataset")
+			.save(Globals.MAIN_ROUTE + Globals.FETCHED_STEAM_DATA)
 
 		println("Successfully exported to the folder!")
 	}
