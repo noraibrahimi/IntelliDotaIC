@@ -19,5 +19,6 @@ object Globals {
 	val CLASSIFIED_MODEL = "classified_model"
 
 	// clustering routes
-	val KAGGLE_DATASET = "kaggle_dataset"
+	val HERO_NAMES = "datas_for_cluster/hero_names.csv"
+	val PLAYERS = "datas_for_cluster/players.csv"
 }
