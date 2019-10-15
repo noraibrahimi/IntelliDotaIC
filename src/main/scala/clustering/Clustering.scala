@@ -1,8 +1,6 @@
 package clustering
 
 import helper.Globals
-import classification.RenameBadNaming
-
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.ml.clustering.KMeans
 import org.apache.spark.ml.evaluation.ClusteringEvaluator
@@ -37,12 +35,9 @@ object Clustering {
 		var groupedBy = players
 			.groupBy("hero_id").mean()
 			.join(heroNames, heroNames("hero__id").equalTo(players("hero_id")))
-			.drop("hero__id", "name", "avg(hero_id")
+			.drop("hero__id", "name", "avg(hero_id)")
 			.sort("localized_name")
 		groupedBy = RenameBadNaming(groupedBy)
-
-
-		groupedBy.show(2)
 
 		val assembler = new VectorAssembler()
 			.setInputCols(elements)

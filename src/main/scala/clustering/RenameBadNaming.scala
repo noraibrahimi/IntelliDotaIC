@@ -1,4 +1,4 @@
-package classification
+package clustering
 
 import org.apache.spark.sql.{Dataset, Row}
 
