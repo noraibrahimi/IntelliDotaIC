@@ -1,6 +1,7 @@
 package clustering
 
 import helper.Globals
+import classification.RenameBadNaming
 
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.ml.clustering.KMeans
@@ -26,8 +27,7 @@ object Clustering {
 			.csv(Globals.MAIN_ROUTE + Globals.PLAYERS)
 
 		val elements = Array(
-			"avg(gold)", "avg(gold_per_min)", "avg(xp_per_min)", "avg(kills)", "avg(deaths)", "avg(assists)",
-			"avg(denies)", "avg(last_hits)", "avg(hero_damage)", "avg(hero_healing)", "avg(level)")
+			"gold", "gold_per_min", "xp_per_min", "kills", "deaths", "assists", "denies", "last_hits", "hero_damage", "hero_healing", "level")
 
 		players = players
 			.select("hero_id",
@@ -37,8 +37,12 @@ object Clustering {
 		var groupedBy = players
 			.groupBy("hero_id").mean()
 			.join(heroNames, heroNames("hero__id").equalTo(players("hero_id")))
-			.drop("hero__id", "name")
+			.drop("hero__id", "name", "avg(hero_id")
 			.sort("localized_name")
+		groupedBy = RenameBadNaming(groupedBy)
+
+
+		groupedBy.show(2)
 
 		val assembler = new VectorAssembler()
 			.setInputCols(elements)
@@ -46,21 +50,23 @@ object Clustering {
 
 		groupedBy = assembler.transform(groupedBy)
 
+		/*
 		val numClusters = 6
-		val numIterations = 250
 
-		val kmeans = new KMeans().setK(numClusters).setSeed(1).setMaxIter(numIterations)
+		val kmeans = new KMeans().setK(numClusters).setSeed(1).setMaxIter(1)
 		val model = kmeans.fit(groupedBy)
 
 		val predictions = model.transform(groupedBy)
 
+		val fly = predictions.groupBy("prediction")
+
 		val evaluator = new ClusteringEvaluator()
 
 		val silhouette = evaluator.evaluate(predictions)
-		println("Silhouette with squared euclidean distance = $silhouette")
+		println(s"Silhouette with squared euclidean distance = $silhouette")
 
 		println("Cluster Centers: ")
 		model.clusterCenters.foreach(println)
-
+		*/
 	}
 }

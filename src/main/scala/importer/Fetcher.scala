@@ -1,6 +1,7 @@
 package importer
 
 import com.google.gson.{Gson, JsonParser}
+import models.Match
 
 object Fetcher {
 	val gson = new Gson()

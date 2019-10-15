@@ -1,4 +1,4 @@
-package classification
+package models
 
 case class Match
 (
