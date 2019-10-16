@@ -21,6 +21,9 @@ object Derivator {
 				radAttr += attr
 			}
 
+			if (attribute.equals("leaver_status"))
+				if (radAttr > 0) radAttr = 1 else radAttr = 0
+
 			results.put(attribute, radAttr)
 		})
 
