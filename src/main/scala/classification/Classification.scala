@@ -26,6 +26,8 @@ object Classification {
 			.csv(Globals.MAIN_ROUTE + Globals.FETCHED_STEAM_DATA)
 		dataframe = dataframe.withColumnRenamed("radiant_win", "label")
 
+		dataframe = OutliersDetection.handleOutliers(dataframe)
+
 		val assembler = new VectorAssembler()
 			.setInputCols(Globals.ATTRIBUTES)
 			.setOutputCol("non-scaled")
