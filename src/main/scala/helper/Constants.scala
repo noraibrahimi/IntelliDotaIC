@@ -1,6 +1,6 @@
 package helper
 
-object Globals {
+object Constants {
 	val START_ID = 5000000000L
 	val END_ID = 5999999999L
 	val FEEDS_NUMBER = 100
@@ -15,6 +15,8 @@ object Globals {
 
 	val FETCHED_STEAM_DATA = "fetched_steam_data"
 	val CLASSIFIED_MODEL = "classified_model"
+	val CLUSTERED_MODEL = "clustered_model"
+	val KAGGLE_DATA = "kaggle_data"
 
 	val HERO_NAMES = "datas_for_cluster/hero_names.csv"
 	val PLAYERS = "datas_for_cluster/players.csv"

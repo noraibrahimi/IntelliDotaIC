@@ -1,6 +1,6 @@
 package importer
 
-import helper.Globals
+import helper.Constants
 import models.Match
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.SparkSession
@@ -21,17 +21,17 @@ object Importer {
 		var foundGames = 0
 
 		breakable {
-			for (gameId <- Globals.START_ID to Globals.END_ID) {
-				val game = Fetcher.fetchGames(Globals.STEAM_API + gameId + Globals.STEAM_KEY)
+			for (gameId <- Constants.START_ID to Constants.END_ID) {
+				val game = Fetcher.fetchGames(Constants.STEAM_API + gameId + Constants.STEAM_KEY)
 
 				if (game != null) {
 					matches = matches :+ game
 					foundGames += 1
 
-					println(foundGames + ". Analyzing game: " + Globals.STEAM_API + gameId + Globals.STEAM_KEY)
+					println(foundGames + ". Analyzing game: " + Constants.STEAM_API + gameId + Constants.STEAM_KEY)
 				}
 
-				if (foundGames == Globals.FEEDS_NUMBER) break
+				if (foundGames == Constants.FEEDS_NUMBER) break
 			}
 		}
 
@@ -40,7 +40,7 @@ object Importer {
 		gamesDF.write.format("csv")
 			.option("header", true)
 			.mode("overwrite")
-			.save(Globals.MAIN_ROUTE + Globals.FETCHED_STEAM_DATA)
+			.save(Constants.MAIN_ROUTE + Constants.FETCHED_STEAM_DATA)
 
 		println("Successfully exported to the folder!")
 	}

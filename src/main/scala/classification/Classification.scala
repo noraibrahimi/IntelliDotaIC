@@ -1,6 +1,6 @@
 package classification
 
-import helper.Globals
+import helper.Constants
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.ml.Pipeline
 import org.apache.spark.ml.classification.RandomForestClassifier
@@ -23,13 +23,13 @@ object Classification {
 		var dataframe = spark.read
 			.option("header", true)
 			.option("inferSchema", true)
-			.csv(Globals.MAIN_ROUTE + Globals.FETCHED_STEAM_DATA)
+			.csv(Constants.MAIN_ROUTE + Constants.FETCHED_STEAM_DATA)
 		dataframe = dataframe.withColumnRenamed("radiant_win", "label")
 
 		dataframe = OutliersDetection.handleOutliers(dataframe)
 
 		val assembler = new VectorAssembler()
-			.setInputCols(Globals.ATTRIBUTES)
+			.setInputCols(Constants.ATTRIBUTES)
 			.setOutputCol("non-scaled")
 		val scaler = new StandardScaler()
 			.setInputCol("non-scaled")
@@ -43,24 +43,11 @@ object Classification {
 		val pipeline = new Pipeline()
     		.setStages(Array(assembler, scaler, algorithm))
 
-		val Array(train, test) = dataframe.randomSplit(Array(0.7, 0.3))
+		val Array(train) = dataframe.randomSplit(Array(0.7, 0.3))
 
 		val model = pipeline.fit(train)
-
-		model.write.overwrite.save(Globals.MAIN_ROUTE + Globals.CLASSIFIED_MODEL)
+		model.write.overwrite.save(Constants.MAIN_ROUTE + Constants.CLASSIFIED_MODEL)
 
 		println("Model successfully saved into respective path!")
-
-		// accuracy and evaluation
-		val predictedModel = model.transform(test)
-
-		val evaluator = new MulticlassClassificationEvaluator()
-			.setLabelCol("label")
-			.setPredictionCol("prediction")
-			.setMetricName("accuracy")
-		val accuracy = evaluator.evaluate(predictedModel)
-
-		println(accuracy * 100 + "% accuracy")
-
 	}
 }
