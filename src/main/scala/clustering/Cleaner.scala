@@ -4,7 +4,7 @@ import helper.Constants
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.SparkSession
 
-object DatasetCleaner {
+object Cleaner {
 	def main(args: Array[String]) = {
 		Logger.getLogger("org").setLevel(Level.OFF)
 		Logger.getLogger("akka").setLevel(Level.OFF)
