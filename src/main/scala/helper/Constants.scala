@@ -16,8 +16,6 @@ object Constants {
 	val FETCHED_STEAM_DATA = "fetched_steam_data"
 	val CLASSIFIED_MODEL = "classified_model"
 	val CLUSTERED_MODEL = "clustered_model"
+	val RAW_KAGGLE_DATA = "raw_kaggle_data"
 	val KAGGLE_DATA = "kaggle_data"
-
-	val HERO_NAMES = "datas_for_cluster/hero_names.csv"
-	val PLAYERS = "datas_for_cluster/players.csv"
 }

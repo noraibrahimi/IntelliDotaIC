@@ -10,15 +10,24 @@ import org.apache.spark.sql.SparkSession
 
 object Clustering {
 	def main(args: Array[String]) = {
+
 		Logger.getLogger("org").setLevel(Level.OFF)
 		Logger.getLogger("akka").setLevel(Level.OFF)
 
 		val spark = SparkSession.builder.appName("T").master("local[*]").getOrCreate
 
-		val data = spark.read
+		var players = spark.read
 			.option("header", true)
 			.option("inferSchema", true)
 			.csv(Constants.MAIN_ROUTE + Constants.KAGGLE_DATA)
+
+		players = players
+			.select("hero_id", "gold", "gold_per_min", "xp_per_min", "kills", "deaths", "assists", "denies",
+				"last_hits", "hero_damage", "hero_healing", "tower_damage", "level")
+
+		var groupedBy = players.groupBy("hero_id").mean().drop("hero_id", "avg(hero_id)")
+
+		groupedBy = RenameBadNaming(groupedBy)
 
 		val elements = Array(
 			"gold", "gold_per_min", "xp_per_min", "kills", "deaths", "assists", "denies", "last_hits", "hero_damage",
@@ -39,11 +48,11 @@ object Clustering {
 		val pipeline = new Pipeline()
 			.setStages(Array(assembler, scaler, kmeans))
 
-		val model = pipeline.fit(data).transform(data)
+		val model = pipeline.fit(groupedBy)
 
-		model.write
-			.mode("overwrite")
-			.save(Constants.MAIN_ROUTE + Constants.CLUSTERED_MODEL)
+		model.transform(groupedBy).printSchema()
+
+		model.write.overwrite.save(Constants.MAIN_ROUTE + Constants.CLUSTERED_MODEL)
 
 		println("Model successfully saved into respective path!")
 	}
