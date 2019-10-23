@@ -16,16 +16,10 @@ object Clustering {
 
 		val spark = SparkSession.builder.appName("T").master("local[*]").getOrCreate
 
-		var players = spark.read
+		var groupedBy = spark.read
 			.option("header", true)
 			.option("inferSchema", true)
 			.csv(Constants.MAIN_ROUTE + Constants.KAGGLE_DATA)
-
-		players = players
-			.select("hero_id", "gold", "gold_per_min", "xp_per_min", "kills", "deaths", "assists", "denies",
-				"last_hits", "hero_damage", "hero_healing", "tower_damage", "level")
-
-		var groupedBy = players.groupBy("hero_id").mean().drop("hero_id", "avg(hero_id)")
 
 		groupedBy = RenameBadNaming(groupedBy)
 
@@ -35,22 +29,13 @@ object Clustering {
 
 		val assembler = new VectorAssembler()
 			.setInputCols(elements)
-			.setOutputCol("featured")
-		val scaler = new StandardScaler()
-			.setInputCol("featured")
 			.setOutputCol("features")
-			.setWithStd(true)
-			.setWithMean(true)
 		val kmeans = new KMeans()
-			.setK(4)
-			.setSeed(1)
-			.setMaxIter(1)
+			.setK(6)
 		val pipeline = new Pipeline()
-			.setStages(Array(assembler, scaler, kmeans))
+			.setStages(Array(assembler, kmeans))
 
 		val model = pipeline.fit(groupedBy)
-
-		model.transform(groupedBy).printSchema()
 
 		model.write.overwrite.save(Constants.MAIN_ROUTE + Constants.CLUSTERED_MODEL)
 

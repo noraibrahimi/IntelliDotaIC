@@ -3,6 +3,7 @@ package clustering
 import helper.Constants
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.functions.col
 
 object Cleaner {
 	def main(args: Array[String]) = {
@@ -20,6 +21,7 @@ object Cleaner {
 			.select("hero_id",
 				"gold", "gold_per_min", "xp_per_min", "kills", "deaths", "assists", "denies",
 				"last_hits", "hero_damage", "hero_healing", "tower_damage", "level")
+            .where(col("level") > 0)
 
 		var groupedBy = players.groupBy("hero_id").mean().drop("hero_id", "avg(hero_id)")
 		groupedBy = RenameBadNaming(groupedBy)
