@@ -32,6 +32,7 @@ object Clustering {
 			.setOutputCol("features")
 		val kmeans = new KMeans()
 			.setK(6)
+    		.setMaxIter(25)
 		val pipeline = new Pipeline()
 			.setStages(Array(assembler, kmeans))
 
