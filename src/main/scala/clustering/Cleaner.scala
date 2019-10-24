@@ -26,7 +26,9 @@ object Cleaner {
 		var groupedBy = players.groupBy("hero_id").mean().drop("hero_id", "avg(hero_id)")
 		groupedBy = RenameBadNaming(groupedBy)
 
-		groupedBy.write
+		groupedBy
+            .coalesce(1)
+			.write
 			.format("csv")
 			.option("header", true)
 			.mode("overwrite")
