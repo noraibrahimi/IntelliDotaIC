@@ -37,7 +37,8 @@ object Importer {
 
 		val gamesDF = matches.toDF
 
-		gamesDF.write.format("csv")
+		gamesDF
+			.write.format("csv")
 			.option("header", true)
     		.option("numPartitions", 1)
 			.mode("overwrite")

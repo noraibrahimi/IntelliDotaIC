@@ -15,7 +15,7 @@ object Cleaner {
 		var players = spark.read
 			.option("header", true)
 			.option("inferSchema", true)
-			.csv(Constants.MAIN_ROUTE + Constants.RAW_KAGGLE_DATA)
+			.csv(System.getenv("raw_kaggle_data"))
 
 		players = players
 			.select("hero_id",
@@ -27,12 +27,11 @@ object Cleaner {
 		groupedBy = RenameBadNaming(groupedBy)
 
 		groupedBy
-            .coalesce(1)
 			.write
 			.format("csv")
 			.option("header", true)
 			.mode("overwrite")
-			.save(Constants.MAIN_ROUTE + Constants.KAGGLE_DATA)
+			.save(System.getenv("kaggle_data"))
 
 		println("Successfully exported cleaned version of this file!")
 	}

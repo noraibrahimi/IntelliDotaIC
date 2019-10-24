@@ -18,7 +18,7 @@ object Clustering {
 		var groupedBy = spark.read
 			.option("header", true)
 			.option("inferSchema", true)
-			.csv(Constants.MAIN_ROUTE + Constants.KAGGLE_DATA)
+			.csv(System.getenv("kaggle_data"))
 
 		groupedBy = RenameBadNaming(groupedBy)
 
@@ -37,7 +37,7 @@ object Clustering {
 
 		val model = pipeline.fit(groupedBy)
 
-		model.write.overwrite.save(Constants.MAIN_ROUTE + Constants.CLUSTERED_MODEL)
+		model.write.overwrite.save(System.getenv("clustered_model"))
 
 		println("Model successfully saved into respective path!")
 	}
