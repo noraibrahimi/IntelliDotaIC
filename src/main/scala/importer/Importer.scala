@@ -16,7 +16,7 @@ object Importer {
 
 		val START_ID = 5000000000L
 		val END_ID = 5999999999L
-		val FEEDS = 10
+		val FEEDS = 5000
 
 		var matches = Seq[Match]()
 		var foundGames = 0
@@ -29,7 +29,7 @@ object Importer {
 					matches = matches :+ game
 					foundGames += 1
 
-					println(foundGames + ". Analyzing game[" + gameId + "]")
+					println(foundGames + ". Analyzing game [" + gameId + "]")
 				}
 
 				if (foundGames == FEEDS) break
