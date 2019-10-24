@@ -22,7 +22,7 @@ object Classification {
 		var dataframe = spark.read
 			.option("header", true)
 			.option("inferSchema", true)
-			.csv(Constants.MAIN_ROUTE + Constants.FETCHED_STEAM_DATA)
+			.csv(System.getenv("fetched_steam_data"))
 		dataframe = dataframe.withColumnRenamed("radiant_win", "label")
 
 		dataframe = OutliersDetection.handleOutliers(dataframe)
@@ -42,10 +42,10 @@ object Classification {
 		val pipeline = new Pipeline()
     		.setStages(Array(assembler, scaler, algorithm))
 
-		val Array(train) = dataframe.randomSplit(Array(0.7, 0.3))
+		val Array(train, test) = dataframe.randomSplit(Array(0.7, 0.3))
 
 		val model = pipeline.fit(train)
-		model.write.overwrite.save(Constants.MAIN_ROUTE + Constants.CLASSIFIED_MODEL)
+		model.write.overwrite.save(System.getenv("classified_model"))
 
 		println("Model successfully saved into respective path!")
 	}

@@ -40,9 +40,8 @@ object Importer {
 		gamesDF
 			.write.format("csv")
 			.option("header", true)
-    		.option("numPartitions", 1)
 			.mode("overwrite")
-			.save(Constants.MAIN_ROUTE + Constants.FETCHED_STEAM_DATA)
+			.save(System.getenv("fetched_steam_data"))
 
 		println("Successfully exported to the folder!")
 	}

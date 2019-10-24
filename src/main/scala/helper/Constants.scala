@@ -10,12 +10,4 @@ object Constants {
 		"gold_per_min", "level", "leaver_status", "xp_per_min", "gold_spent",
 		"deaths", "denies", "hero_damage", "tower_damage", "last_hits", "hero_healing"
 	)
-
-	val MAIN_ROUTE = "C:/Users/Labinot/Desktop/main_route/"
-
-	val FETCHED_STEAM_DATA = "fetched_steam_data"
-	val CLASSIFIED_MODEL = "classified_model"
-	val CLUSTERED_MODEL = "clustered_model"
-	val RAW_KAGGLE_DATA = "raw_kaggle_data"
-	val KAGGLE_DATA = "kaggle_data"
 }
