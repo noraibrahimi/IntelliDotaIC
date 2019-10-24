@@ -1,6 +1,5 @@
 package classification
 
-import helper.Constants
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.ml.Pipeline
 import org.apache.spark.ml.classification.RandomForestClassifier
@@ -28,7 +27,7 @@ object Classification {
 		dataframe = OutliersDetection.handleOutliers(dataframe)
 
 		val assembler = new VectorAssembler()
-			.setInputCols(Constants.ATTRIBUTES)
+			.setInputCols(args)
 			.setOutputCol("non-scaled")
 		val scaler = new StandardScaler()
 			.setInputCol("non-scaled")

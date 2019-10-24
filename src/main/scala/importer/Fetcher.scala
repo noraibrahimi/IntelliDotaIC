@@ -7,7 +7,7 @@ object Fetcher {
 	val gson = new Gson()
 	val json = new JsonParser()
 
-	def fetchGames(api: String): Match = {
+	def fetchGames(api: String, args: Array[String]): Match = {
 
 		val response = requests.get(api)
 
@@ -19,7 +19,7 @@ object Fetcher {
 			responseAsJSON.has("error") || responseAsJSON.get("duration").getAsInt == 0
 				|| !responseAsJSON.has("radiant_win")) return null
 
-		val preparedGames = Derivator.prepareGame(responseAsJSON.get("players").getAsJsonArray)
+		val preparedGames = Derivator.prepareGame(responseAsJSON.get("players").getAsJsonArray, args)
 
 		val radiantWin = responseAsJSON.get("radiant_win").getAsBoolean
 		responseAsJSON.remove("radiant_win")

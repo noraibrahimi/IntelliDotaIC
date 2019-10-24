@@ -1,6 +1,5 @@
 package importer
 
-import helper.Constants
 import models.Match
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.SparkSession
@@ -9,29 +8,31 @@ import scala.util.control.Breaks.{break, breakable}
 
 object Importer {
 	def main(args: Array[String]) = {
-
 		Logger.getLogger("org").setLevel(Level.OFF)
 		Logger.getLogger("akka").setLevel(Level.OFF)
 
 		val spark = SparkSession.builder.appName("T").master("local[*]").getOrCreate
 		import spark.implicits._
 
-		var matches = Seq[Match]()
+		val START_ID = 5000000000L
+		val END_ID = 5999999999L
+		val FEEDS = 10
 
+		var matches = Seq[Match]()
 		var foundGames = 0
 
 		breakable {
-			for (gameId <- Constants.START_ID to Constants.END_ID) {
-				val game = Fetcher.fetchGames(Constants.STEAM_API + gameId + Constants.STEAM_KEY)
+			for (gameId <- START_ID to END_ID) {
+				val game = Fetcher.fetchGames(System.getProperty("steam_api") + gameId + System.getProperty("steam_key"), args)
 
 				if (game != null) {
 					matches = matches :+ game
 					foundGames += 1
 
-					println(foundGames + ". Analyzing game: " + Constants.STEAM_API + gameId + Constants.STEAM_KEY)
+					println(foundGames + ". Analyzing game[" + gameId + "]")
 				}
 
-				if (foundGames == Constants.FEEDS_NUMBER) break
+				if (foundGames == FEEDS) break
 			}
 		}
 

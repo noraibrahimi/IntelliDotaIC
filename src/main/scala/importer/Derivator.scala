@@ -1,7 +1,6 @@
 package importer
 
 import com.google.gson.{Gson, JsonArray}
-import helper.Constants
 
 import scala.collection.mutable.HashMap
 import scala.util.Try
@@ -9,10 +8,10 @@ import scala.util.Try
 object Derivator {
 	val gson = new Gson()
 
-	def prepareGame(players: JsonArray): HashMap[String, Integer] = {
+	def prepareGame(players: JsonArray, args: Array[String]): HashMap[String, Integer] = {
 		val results = new HashMap[String, Integer]
 
-		Constants.ATTRIBUTES.foreach(attribute => {
+		args.foreach(attribute => {
 			var radAttr = 0
 
 			for (i <- 0 to 5) {
