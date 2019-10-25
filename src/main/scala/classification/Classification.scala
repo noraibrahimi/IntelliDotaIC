@@ -3,6 +3,7 @@ package classification
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.ml.Pipeline
 import org.apache.spark.ml.classification.RandomForestClassifier
+import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
 import org.apache.spark.ml.feature.{StandardScaler, VectorAssembler}
 import org.apache.spark.sql.SparkSession
 
@@ -44,8 +45,19 @@ object Classification {
 		val Array(train, test) = dataframe.randomSplit(Array(0.7, 0.3))
 
 		val model = pipeline.fit(train)
-		model.write.overwrite.save(System.getenv("classified_model"))
 
+		model.write.overwrite.save(System.getenv("classified_model"))
 		println("Model successfully saved into respective path!")
+
+		/*
+		val predictions = model.transform(test)
+		val evaluator = new MulticlassClassificationEvaluator()
+			.setLabelCol("label")
+			.setPredictionCol("prediction")
+			.setMetricName("accuracy")
+		val accuracy = evaluator.evaluate(predictions) * 100
+		println(s"Random forest classifier accuracy: $accuracy. ")
+
+		 */
 	}
 }

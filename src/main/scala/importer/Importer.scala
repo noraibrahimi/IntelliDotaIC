@@ -16,7 +16,7 @@ object Importer {
 
 		val START_ID = 5000000000L
 		val END_ID = 5999999999L
-		val FEEDS = 5000
+		val FEEDS = 1000
 
 		var matches = Seq[Match]()
 		var foundGames = 0
