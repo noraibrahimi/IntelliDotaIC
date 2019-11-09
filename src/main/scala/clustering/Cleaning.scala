@@ -22,7 +22,7 @@ object Cleaning {
 				"last_hits", "hero_damage", "hero_healing", "tower_damage", "level")
             .where(col("level") > 0)
 
-		var groupedBy = players.groupBy("hero_id").mean().drop("hero_id", "avg(hero_id)")
+		var groupedBy = players.groupBy("hero_id").mean().drop("hero_id")
 		groupedBy = RenameBadNaming(groupedBy)
 
 		groupedBy
