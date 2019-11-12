@@ -21,12 +21,8 @@ object Clustering {
 
 		groupedBy = RenameBadNaming(groupedBy)
 
-		val elements = Array(
-			"gold", "gold_per_min", "xp_per_min", "kills", "deaths", "assists", "denies", "last_hits", "hero_damage",
-			"hero_healing", "tower_damage", "level")
-
 		val assembler = new VectorAssembler()
-			.setInputCols(elements)
+			.setInputCols(args)
 			.setOutputCol("features")
 		val kmeans = new KMeans()
 			.setK(6)
