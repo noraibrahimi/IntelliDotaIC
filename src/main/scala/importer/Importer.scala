@@ -14,9 +14,9 @@ object Importer {
 		val spark = SparkSession.builder.appName("T").master("local[*]").getOrCreate
 		import spark.implicits._
 
-		val START_ID = 5000150000L
+		val START_ID = 5000161318L
 		val END_ID = 5999999999L
-		val FEEDS = 10000
+		val FEEDS = 5000
 
 		var matches = Seq[Match]()
 		var foundGames = 0

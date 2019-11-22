@@ -25,6 +25,8 @@ object Classification {
 			.csv(System.getenv("fetched_steam_data"))
 		dataframe = dataframe.withColumnRenamed("radiant_win", "label")
 
+
+
 		dataframe = OutliersDetection.handleOutliers(dataframe)
 
 		val assembler = new VectorAssembler()
