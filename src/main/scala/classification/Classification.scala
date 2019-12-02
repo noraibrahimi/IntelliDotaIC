@@ -30,11 +30,11 @@ object Classification {
 		val radiant_score = new QuantileDiscretizer()
 			.setInputCol("gold_spent")
 			.setOutputCol("gold_spent_to_change")
-			.setNumBuckets(201) // me 100 diference, 20114 / 201 = 100 (vlera e pare marre prej getSchema)
+			.setNumBuckets(3) // me 100 diference, 20114 / 201 = 100 (vlera e pare marre prej getSchema)
 		val deaths = new QuantileDiscretizer()
 			.setInputCol("hero_damage")
 			.setOutputCol("hero_damage_to_change")
-			.setNumBuckets(270)	// me 100 diference * 0.75, 36123 / 270.
+			.setNumBuckets(3)	// me 100 diference * 0.75, 36123 / 270.
 		val assembler = new VectorAssembler()
 			.setInputCols(args)
 			.setOutputCol("non-scaled")
